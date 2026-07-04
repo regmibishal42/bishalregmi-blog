@@ -18,3 +18,5 @@ yarn-error.log*
 /.next/
 /.vite/
 /.turbo/
+
+SETUP_GUIDE.html
