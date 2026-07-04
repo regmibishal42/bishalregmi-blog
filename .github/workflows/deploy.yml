@@ -19,14 +19,14 @@ jobs:
         with:
           node-version: '20'
       - name: Install site dependencies
-        working-directory: site
+        working-directory: sitehttps://regmibishal42.github.io/bishalregmi-blog
         run: npm install
       - name: Build site
         working-directory: site
         run: npm run build
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
-        with:
+        with:w
           path: site/dist
 
   deploy:
