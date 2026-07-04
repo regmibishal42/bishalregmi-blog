@@ -1,0 +1,6 @@
+{
+  "title": "Redis Cluster: The 16384 Slots and the Gossip Beneath",
+  "description": "A deep dive into Redis Cluster's internals: hash slots, gossip protocol, resharding, MOVED/ASK redirects, and failover mechanics.",
+  "slug": "redis-cluster-the-16384-slots-and-the-gossip-beneath",
+  "url": "https://bishalregmi.com.np/blog/redis-cluster-the-16384-slots-and-the-gossip-beneath/"
+}
