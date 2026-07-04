@@ -42,18 +42,17 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Ensure we have the latest remote main and reset our runner branch to it
+          git fetch --no-tags --prune origin main
+          git checkout -B main origin/main
           git add site/src/content/blog automation/latest-post.json || true
           if git diff --cached --quiet; then
             echo "No generated content to commit."
             echo "committed=false" >> $GITHUB_OUTPUT
           else
-            # Ensure we have the latest remote changes to avoid non-fast-forward
-            git fetch origin main
-            # Try to rebase our generated commit on top of origin/main
-            git rebase origin/main || git pull --rebase origin main || true
-            git commit -m "chore: generate weekly AI blog post" || true
+            git commit -m "chore: generate weekly AI blog post"
             # Push with lease to avoid overwriting unrelated remote work
-            git push --set-upstream origin HEAD:main --force-with-lease
+            git push --set-upstream origin main --force-with-lease
             echo "committed=true" >> $GITHUB_OUTPUT
           fi
 
