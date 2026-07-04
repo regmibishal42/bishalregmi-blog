@@ -14,7 +14,8 @@ const {
   LINKEDIN_CLIENT_ID,
   LINKEDIN_CLIENT_SECRET,
   LINKEDIN_REFRESH_TOKEN,
-  LINKEDIN_PERSON_URN
+  LINKEDIN_PERSON_URN,
+  LINKEDIN_ACCESS_TOKEN
 } = process.env;
 
 function requireEnv(name, value) {
@@ -23,6 +24,9 @@ function requireEnv(name, value) {
 }
 
 async function refreshAccessToken() {
+  // If a temporary access token is supplied (short-lived, ~60 days), use it.
+  if (LINKEDIN_ACCESS_TOKEN) return LINKEDIN_ACCESS_TOKEN;
+
   const res = await fetch('https://www.linkedin.com/oauth/v2/accessToken', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

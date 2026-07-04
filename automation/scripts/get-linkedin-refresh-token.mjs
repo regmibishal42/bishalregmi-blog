@@ -5,8 +5,7 @@
 //
 // Prereqs (see SETUP_GUIDE for the click-by-click version):
 //   1. Create an app at https://www.linkedin.com/developers/apps
-//   2. Add the "Sign In with LinkedIn using OpenID Connect" and
-//      "Share on LinkedIn" products to the app
+//   2. Add the "Share on LinkedIn" product to the app (under Products tab)
 //   3. Under Auth > OAuth 2.0 settings, add this exact redirect URL:
 //      http://localhost:8787/callback
 //   4. Copy your Client ID and Client Secret into a local .env file
@@ -20,7 +19,7 @@ import { execSync } from 'child_process';
 const CLIENT_ID = process.env.LINKEDIN_CLIENT_ID;
 const CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET;
 const REDIRECT_URI = 'http://localhost:8787/callback';
-const SCOPE = 'openid profile w_member_social offline_access';
+const SCOPE = 'openid profile w_member_social';
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error('Set LINKEDIN_CLIENT_ID and LINKEDIN_CLIENT_SECRET env vars first.');
@@ -86,19 +85,22 @@ const server = http.createServer(async (req, res) => {
 
   console.log('\n=== Save these as GitHub repo secrets ===\n');
   if (!tokenData.refresh_token) {
-    console.warn('WARNING: LinkedIn did not return a refresh token. Make sure your app has the correct products and the scope includes offline_access.');
-    console.warn('Full response:', tokenData);
+    console.warn('NOTE: LinkedIn did not return a refresh token. Standard developer accounts');
+    console.warn('only receive a short-lived access token (~60 days) with no refresh token.');
+    console.warn('Save the LINKEDIN_ACCESS_TOKEN secret instead and update it every 60 days.\n');
+    console.log('LINKEDIN_ACCESS_TOKEN =', tokenData.access_token);
+  } else {
+    console.log('LINKEDIN_REFRESH_TOKEN =', tokenData.refresh_token);
   }
-  console.log('LINKEDIN_REFRESH_TOKEN =', tokenData.refresh_token);
-  console.log('\n(Access token also issued, valid 60 days — the automation will refresh it automatically using the refresh token above, so you do not need to save the access token.)\n');
+  console.log('\n(Access token issued — valid 60 days. The automation will refresh it automatically if you have a refresh token; otherwise it will use the access token directly.)\n');
 
-  // Also fetch and print the member URN you'll need for posting.
+  // Fetch the member URN you'll need for posting.
   const meRes = await fetch('https://api.linkedin.com/v2/userinfo', {
     headers: { Authorization: `Bearer ${tokenData.access_token}` }
   });
   const me = await meRes.json();
   console.log('LINKEDIN_PERSON_URN =', `urn:li:person:${me.sub}`);
-  console.log('\nAdd both of the above, plus LINKEDIN_CLIENT_ID and LINKEDIN_CLIENT_SECRET, as repo secrets.\n');
+  console.log('\nAdd LINKEDIN_REFRESH_TOKEN, LINKEDIN_PERSON_URN, LINKEDIN_CLIENT_ID, and LINKEDIN_CLIENT_SECRET as repo secrets.\n');
 
   server.close();
 });
