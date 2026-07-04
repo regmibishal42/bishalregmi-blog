@@ -1,0 +1,47 @@
+name: Weekly AI blog post
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 9 * * 1'
+
+permissions:
+  contents: write
+
+jobs:
+  generate-and-post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install automation dependencies
+        working-directory: automation
+        run: npm install
+      - name: Generate blog post
+        working-directory: automation
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: npm run generate
+      - name: Post latest blog to LinkedIn
+        working-directory: automation
+        env:
+          LINKEDIN_CLIENT_ID: ${{ secrets.LINKEDIN_CLIENT_ID }}
+          LINKEDIN_CLIENT_SECRET: ${{ secrets.LINKEDIN_CLIENT_SECRET }}
+          LINKEDIN_REFRESH_TOKEN: ${{ secrets.LINKEDIN_REFRESH_TOKEN }}
+          LINKEDIN_PERSON_URN: ${{ secrets.LINKEDIN_PERSON_URN }}
+        run: npm run post-linkedin
+      - name: Commit generated post
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add site/src/content/blog automation/latest-post.json || true
+          if git diff --cached --quiet; then
+            echo "No generated content to commit."
+          else
+            git commit -m "chore: generate weekly AI blog post"
+            git push
+          fi
