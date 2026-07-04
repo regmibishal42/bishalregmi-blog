@@ -20,7 +20,7 @@ import { execSync } from 'child_process';
 const CLIENT_ID = process.env.LINKEDIN_CLIENT_ID;
 const CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET;
 const REDIRECT_URI = 'http://localhost:8787/callback';
-const SCOPE = 'openid profile w_member_social';
+const SCOPE = 'openid profile w_member_social offline_access';
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error('Set LINKEDIN_CLIENT_ID and LINKEDIN_CLIENT_SECRET env vars first.');
@@ -85,6 +85,10 @@ const server = http.createServer(async (req, res) => {
   res.end('Success! You can close this tab and go back to your terminal.');
 
   console.log('\n=== Save these as GitHub repo secrets ===\n');
+  if (!tokenData.refresh_token) {
+    console.warn('WARNING: LinkedIn did not return a refresh token. Make sure your app has the correct products and the scope includes offline_access.');
+    console.warn('Full response:', tokenData);
+  }
   console.log('LINKEDIN_REFRESH_TOKEN =', tokenData.refresh_token);
   console.log('\n(Access token also issued, valid 60 days — the automation will refresh it automatically using the refresh token above, so you do not need to save the access token.)\n');
 
