@@ -43,8 +43,9 @@ async function refreshAccessToken() {
   return data.access_token;
 }
 
-function buildPostText({ title, description, url }) {
-  return `${title}\n\n${description}\n\nFull post: ${url}\n\n#backend #softwareengineering #buildinpublic`;
+function buildPostText({ title, description, url, linkedinHook }) {
+  const hook = linkedinHook ? `${linkedinHook}\n` : `🚀 New Blog Post: ${title}\n`;
+  return `${hook}\n${description}\n\nRead the full deep dive here ⬇️\n${url}\n\n#backend #softwareengineering #buildinpublic`;
 }
 
 async function main() {

@@ -87,7 +87,8 @@ async function main() {
     category: topic.category,
     draft: false,
     aiAssisted: true,
-    readingTime: Math.ceil(stats.minutes)
+    readingTime: Math.ceil(stats.minutes),
+    linkedinHook: parsed.data.linkedinHook || ''
   };
 
   if (!existsSync(BLOG_DIR)) mkdirSync(BLOG_DIR, { recursive: true });
@@ -104,7 +105,8 @@ async function main() {
     title: frontmatter.title,
     description: frontmatter.description,
     slug,
-    url: `https://bishalregmi.com.np/blog/${slug}/`
+    url: `https://bishalregmi.com.np/blog/${slug}/`,
+    linkedinHook: frontmatter.linkedinHook
   };
   writeFileSync(path.join(ROOT, 'automation', 'latest-post.json'), JSON.stringify(summary, null, 2));
 

@@ -2,10 +2,17 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
+const defaultSlugs = ['from-ilike-to-real-search', 'idempotency-keys-save-you-at-3am', 'why-connection-pools-matter'];
 const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const featured = allPosts.slice(0, 3);
+const newPosts = allPosts.filter(post => !defaultSlugs.includes(post.slug));
+const defaultPosts = allPosts.filter(post => defaultSlugs.includes(post.slug));
+
+let featured = [...newPosts];
+if (featured.length < 3) {
+  featured = [...featured, ...defaultPosts].slice(0, 3);
+}
 
 const techStack = [
   'Go', 'TypeScript', 'Node.js', 'NestJS', 'PostgreSQL',
