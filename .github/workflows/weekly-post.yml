@@ -47,8 +47,13 @@ jobs:
             echo "No generated content to commit."
             echo "committed=false" >> $GITHUB_OUTPUT
           else
-            git commit -m "chore: generate weekly AI blog post"
-            git push origin HEAD:main
+            # Ensure we have the latest remote changes to avoid non-fast-forward
+            git fetch origin main
+            # Try to rebase our generated commit on top of origin/main
+            git rebase origin/main || git pull --rebase origin main || true
+            git commit -m "chore: generate weekly AI blog post" || true
+            # Push with lease to avoid overwriting unrelated remote work
+            git push --set-upstream origin HEAD:main --force-with-lease
             echo "committed=true" >> $GITHUB_OUTPUT
           fi
 
