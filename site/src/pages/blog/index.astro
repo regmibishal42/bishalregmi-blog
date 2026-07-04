@@ -6,55 +6,195 @@ const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const allTags = [...new Set(allPosts.flatMap((p) => p.data.tags))].sort();
+
+const base = import.meta.env.BASE_URL;
+const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
+
+// Serialize posts for client-side JS
+const postsJson = JSON.stringify(allPosts.map((p) => ({
+  slug:        p.slug,
+  title:       p.data.title,
+  description: p.data.description,
+  pubDate:     p.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+  readingTime: p.data.readingTime ?? null,
+  tags:        p.data.tags,
+  href:        `${normalizedBase}/blog/${p.slug}/`
+})));
 ---
 
-<BaseLayout title="Blog" description="Deep dives on backend engineering, databases, distributed systems, and AI infrastructure.">
+<BaseLayout
+  title="Blog"
+  description="Deep dives on backend engineering, databases, distributed systems, and the problems that only show up under real production load."
+>
   <span class="eyebrow">writing</span>
   <h1>Blog</h1>
-  <p class="tagline">Deep dives on backend systems, databases, and the problems that only show up once real traffic hits.</p>
+  <p class="tagline">
+    Deep dives on backend systems, databases, and the problems that only show up once real traffic hits.
+    Published weekly.
+  </p>
 
-  <div id="search"></div>
+  <!-- Search -->
+  <div class="search-wrap">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input
+      id="blog-search"
+      type="search"
+      placeholder="Search posts…"
+      autocomplete="off"
+      spellcheck="false"
+    />
+  </div>
 
+  <!-- Tag filter pills -->
   <div class="filter-bar" id="filter-bar">
     <button class="filter-pill active" data-tag="all">All</button>
     {allTags.map((tag) => <button class="filter-pill" data-tag={tag}>{tag}</button>)}
   </div>
 
-  <ul class="post-list" id="post-list">
-    {allPosts.map((post) => (
-      <li class="post-item" data-tags={post.data.tags.join(',')}>
-        <a href={`/blog/${post.slug}/`} class="post-title">{post.data.title}</a>
-        <div class="post-meta">
-          {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-          {post.data.readingTime && ` · ${post.data.readingTime} min read`}
-        </div>
-        <p class="post-excerpt">{post.data.description}</p>
-        <div>
-          {post.data.tags.map((tag: string) => <span class="tag">{tag}</span>)}
-        </div>
-      </li>
-    ))}
-  </ul>
+  <!-- Post list (rendered by JS) -->
+  <ul class="post-list" id="post-list"></ul>
 
-  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
-  <script is:inline src="/pagefind/pagefind-ui.js"></script>
-  <script is:inline>
-    window.addEventListener('DOMContentLoaded', () => {
-      if (window.PagefindUI) {
-        new PagefindUI({ element: '#search', showSubResults: true, showImages: false });
-      }
-    });
+  <!-- Empty state -->
+  <div class="empty-state" id="empty-state">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <p>No posts found for that search.</p>
+  </div>
 
-    document.getElementById('filter-bar').addEventListener('click', (e) => {
-      const btn = e.target.closest('.filter-pill');
-      if (!btn) return;
-      document.querySelectorAll('.filter-pill').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      const tag = btn.dataset.tag;
-      document.querySelectorAll('#post-list .post-item').forEach((item) => {
-        const tags = item.dataset.tags.split(',');
-        item.style.display = tag === 'all' || tags.includes(tag) ? '' : 'none';
-      });
-    });
-  </script>
+  <!-- Pagination -->
+  <div class="pagination" id="pagination"></div>
+
+  <!-- Hidden pagefind for build compatibility -->
+  <div id="pagefind-search" style="display:none"></div>
 </BaseLayout>
+
+<script define:vars={{ postsJson, normalizedBase }}>
+  const POSTS_PER_PAGE = 10;
+  const posts = JSON.parse(postsJson);
+
+  let filtered = [...posts];
+  let currentPage = 1;
+  let activeTag = 'all';
+  let searchQuery = '';
+
+  const listEl    = document.getElementById('post-list');
+  const emptyEl   = document.getElementById('empty-state');
+  const paginEl   = document.getElementById('pagination');
+  const filterBar = document.getElementById('filter-bar');
+  const searchEl  = document.getElementById('blog-search');
+
+  function createPostHTML(post) {
+    const tags = post.tags.map(t => `<span class="tag">${t}</span>`).join('');
+    const readingTime = post.readingTime ? `<span class="meta-sep">·</span><span>${post.readingTime} min read</span>` : '';
+    return `
+      <li class="post-item">
+        <a href="${post.href}" class="post-title">${post.title}</a>
+        <div class="post-meta">
+          <span>${post.pubDate}</span>
+          ${readingTime}
+        </div>
+        <p class="post-excerpt">${post.description}</p>
+        ${tags ? `<div class="tag-row">${tags}</div>` : ''}
+      </li>`;
+  }
+
+  function applyFilters() {
+    const q = searchQuery.trim().toLowerCase();
+    filtered = posts.filter(p => {
+      const matchesTag = activeTag === 'all' || p.tags.includes(activeTag);
+      const matchesSearch = !q ||
+        p.title.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.tags.some(t => t.toLowerCase().includes(q));
+      return matchesTag && matchesSearch;
+    });
+    currentPage = 1;
+    render();
+  }
+
+  function render() {
+    const total   = filtered.length;
+    const pages   = Math.max(1, Math.ceil(total / POSTS_PER_PAGE));
+    currentPage   = Math.min(currentPage, pages);
+    const start   = (currentPage - 1) * POSTS_PER_PAGE;
+    const visible = filtered.slice(start, start + POSTS_PER_PAGE);
+
+    listEl.innerHTML  = visible.map(createPostHTML).join('');
+    emptyEl.style.display  = total === 0 ? 'block' : 'none';
+    paginEl.style.display  = pages <= 1  ? 'none'  : 'flex';
+
+    if (pages > 1) renderPagination(pages);
+  }
+
+  function renderPagination(pages) {
+    const isFirst = currentPage === 1;
+    const isLast  = currentPage === pages;
+
+    let html = `<button class="page-btn" id="pg-prev" ${isFirst ? 'disabled' : ''}>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>`;
+
+    // page numbers — show at most 7 buttons
+    const range = getPaginationRange(currentPage, pages);
+    for (const item of range) {
+      if (item === '…') {
+        html += `<span class="page-btn" style="cursor:default;opacity:.4">…</span>`;
+      } else {
+        html += `<button class="page-btn ${item === currentPage ? 'active' : ''}" data-page="${item}">${item}</button>`;
+      }
+    }
+
+    html += `<button class="page-btn" id="pg-next" ${isLast ? 'disabled' : ''}>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>`;
+
+    paginEl.innerHTML = html;
+
+    document.getElementById('pg-prev').addEventListener('click', () => { if (currentPage > 1) { currentPage--; render(); scrollToTop(); } });
+    document.getElementById('pg-next').addEventListener('click', () => { if (currentPage < pages) { currentPage++; render(); scrollToTop(); } });
+    paginEl.querySelectorAll('[data-page]').forEach(btn => {
+      btn.addEventListener('click', () => { currentPage = parseInt(btn.dataset.page); render(); scrollToTop(); });
+    });
+  }
+
+  function getPaginationRange(current, total) {
+    if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+    const result = [];
+    if (current <= 4) {
+      for (let i = 1; i <= 5; i++) result.push(i);
+      result.push('…', total);
+    } else if (current >= total - 3) {
+      result.push(1, '…');
+      for (let i = total - 4; i <= total; i++) result.push(i);
+    } else {
+      result.push(1, '…', current - 1, current, current + 1, '…', total);
+    }
+    return result;
+  }
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Tag filter
+  filterBar.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-pill');
+    if (!btn) return;
+    filterBar.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTag = btn.dataset.tag;
+    applyFilters();
+  });
+
+  // Search input
+  let debounceTimer;
+  searchEl.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      searchQuery = searchEl.value;
+      applyFilters();
+    }, 180);
+  });
+
+  // Initial render
+  render();
+</script>

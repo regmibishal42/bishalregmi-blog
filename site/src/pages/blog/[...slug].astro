@@ -4,14 +4,23 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map((post) => ({
+  const sorted = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+  return sorted.map((post, index) => ({
     params: { slug: post.slug },
-    props: { post }
+    props: {
+      post,
+      prevPost: sorted[index + 1] ?? null,
+      nextPost: sorted[index - 1] ?? null
+    }
   }));
 }
 
-const { post } = Astro.props;
+const { post, prevPost, nextPost } = Astro.props;
 const { Content } = await post.render();
+
+const base = import.meta.env.BASE_URL;
+const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -38,18 +47,63 @@ const jsonLd = {
   tags={post.data.tags}
   jsonLd={jsonLd}
 >
-  <article>
-    <a class="see-all" href="/blog" style="margin: 0 0 1.5rem;">← Back to blog</a>
-    <h1>{post.data.title}</h1>
-    <div class="post-meta">
-      {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-      {post.data.readingTime && ` · ${post.data.readingTime} min read`}
+  <div class="article-wrapper">
+    <!-- Back link -->
+    <a href={`${normalizedBase}/blog/`} class="back-link">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      All posts
+    </a>
+
+    <!-- Article header -->
+    <header class="article-header">
+      <h1>{post.data.title}</h1>
+      <div class="article-meta">
+        <span>{post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+        {post.data.readingTime && (
+          <>
+            <span class="meta-dot">·</span>
+            <span>{post.data.readingTime} min read</span>
+          </>
+        )}
+        {post.data.aiAssisted && (
+          <>
+            <span class="meta-dot">·</span>
+            <span>AI‑assisted</span>
+          </>
+        )}
+      </div>
+      {post.data.tags.length > 0 && (
+        <div class="tag-row">
+          {post.data.tags.map((tag: string) => (
+            <a class="tag" href={`${normalizedBase}/tags/${tag}/`}>{tag}</a>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <!-- Article body -->
+    <div class="article-content">
+      <article>
+        <Content />
+      </article>
     </div>
-    <div style="margin: 0.75rem 0 2rem;">
-      {post.data.tags.map((tag: string) => (
-        <a class="tag" href={`/tags/${tag}/`}>{tag}</a>
-      ))}
-    </div>
-    <Content />
-  </article>
+
+    <!-- Prev / Next navigation -->
+    {(prevPost || nextPost) && (
+      <nav class="post-nav" aria-label="Post navigation">
+        {prevPost ? (
+          <a href={`${normalizedBase}/blog/${prevPost.slug}/`} class="post-nav-link prev">
+            <span class="nav-dir">← Previous</span>
+            <span class="nav-title">{prevPost.data.title}</span>
+          </a>
+        ) : <div></div>}
+        {nextPost ? (
+          <a href={`${normalizedBase}/blog/${nextPost.slug}/`} class="post-nav-link next">
+            <span class="nav-dir">Next →</span>
+            <span class="nav-title">{nextPost.data.title}</span>
+          </a>
+        ) : <div></div>}
+      </nav>
+    )}
+  </div>
 </BaseLayout>

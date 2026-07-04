@@ -25,9 +25,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og-image.png', Astro.site);
 const siteName = 'Bishal Regmi';
 
-const GITHUB_URL = 'https://github.com/regmibishal42';
-const LINKEDIN_URL = 'https://www.linkedin.com/in/bishalregmi42';
-const EMAIL = 'regmibishal42@gmail.com';
+const GITHUB_URL   = 'https://github.com/regmibishal42';
+const LINKEDIN_URL = 'https://www.linkedin.com/in/bishal-regmi-319770245/';
+const EMAIL        = 'regmibishal42@gmail.com';
+
+// determine active nav link
+const pathname = Astro.url.pathname;
+const base = import.meta.env.BASE_URL;
+const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
+const isBlog    = pathname.startsWith(`${normalizedBase}/blog`);
+const isWork    = pathname === `${normalizedBase}/` || pathname === `${normalizedBase}`;
 ---
 
 <!doctype html>
@@ -51,12 +58,11 @@ const EMAIL = 'regmibishal42@gmail.com';
     <meta property="og:image" content={ogImage} />
     <meta property="og:site_name" content={siteName} />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
-    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    {modifiedTime  && <meta property="article:modified_time"  content={modifiedTime} />}
     {tags.map((tag: string) => <meta property="article:tag" content={tag} />)}
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
@@ -75,6 +81,7 @@ const EMAIL = 'regmibishal42@gmail.com';
       <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     )}
 
+    <!-- Theme — run before paint to avoid flash -->
     <script is:inline>
       (function () {
         var stored = localStorage.getItem('theme');
@@ -84,43 +91,66 @@ const EMAIL = 'regmibishal42@gmail.com';
     </script>
   </head>
   <body>
+    <!-- Reading progress bar (only shown on article pages) -->
+    <div id="progress-bar"></div>
+
     <nav>
-      <a class="brand" href="/">
-        <span class="brand-mark">B</span>
-        <span class="brand-name">bishal<span class="brand-dot">.</span>dev</span>
-      </a>
-      <div class="links">
-        <a href="/blog">Blog</a>
-        <a href="/#work">Work</a>
-        <a href="/#contact">Contact</a>
-        <button id="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle color theme">
-          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
-        </button>
+      <div class="nav-inner">
+        <a class="brand" href={`${normalizedBase}/`}>
+          <span class="brand-mark">B</span>
+          <span class="brand-name">bishal<span class="brand-dot">.</span>dev</span>
+        </a>
+        <div class="links">
+          <a href={`${normalizedBase}/blog/`} class={isBlog ? 'active' : ''}>Blog</a>
+          <a href={`${normalizedBase}/#work`}>Work</a>
+          <a href={`${normalizedBase}/#contact`}>Contact</a>
+          <button id="theme-toggle" type="button" aria-label="Toggle color theme">
+            <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+          </button>
+        </div>
       </div>
     </nav>
+
     <main>
       <slot />
     </main>
+
     <footer>
       <div class="footer-row">
-        <p>&copy; {new Date().getFullYear()} Bishal Regmi. Built with Astro.</p>
+        <p style="margin:0;">&copy; {new Date().getFullYear()} Bishal Regmi &mdash; Built with Astro</p>
         <div class="footer-links">
-          <a href={`mailto:${EMAIL}`} aria-label="Email">Email</a>
-          <a href={GITHUB_URL} target="_blank" rel="noopener">GitHub</a>
+          <a href={`mailto:${EMAIL}`}>Email</a>
+          <a href={GITHUB_URL}   target="_blank" rel="noopener">GitHub</a>
           <a href={LINKEDIN_URL} target="_blank" rel="noopener">LinkedIn</a>
         </div>
       </div>
     </footer>
 
     <script is:inline>
+      // Theme toggle
       var toggle = document.getElementById('theme-toggle');
-      toggle.addEventListener('click', function () {
-        var current = document.documentElement.getAttribute('data-theme');
-        var next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-      });
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          var current = document.documentElement.getAttribute('data-theme');
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        });
+      }
+
+      // Reading progress bar
+      var bar = document.getElementById('progress-bar');
+      if (bar && document.querySelector('article')) {
+        function updateProgress() {
+          var scrollTop = window.scrollY;
+          var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          bar.style.width = Math.min(pct, 100) + '%';
+        }
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        updateProgress();
+      }
     </script>
   </body>
 </html>

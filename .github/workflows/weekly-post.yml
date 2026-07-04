@@ -1,7 +1,7 @@
 name: Weekly AI blog post
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
   schedule:
     - cron: '0 9 * * 1'
 
@@ -43,5 +43,5 @@ jobs:
             echo "No generated content to commit."
           else
             git commit -m "chore: generate weekly AI blog post"
-            git push
+            git push origin HEAD:main
           fi
