@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const allTags = [...new Set(allPosts.flatMap((p) => p.data.tags))].sort();
+---
+
+<BaseLayout title="Blog" description="Deep dives on backend engineering, databases, distributed systems, and AI infrastructure.">
+  <span class="eyebrow">writing</span>
+  <h1>Blog</h1>
+  <p class="tagline">Deep dives on backend systems, databases, and the problems that only show up once real traffic hits.</p>
+
+  <div id="search"></div>
+
+  <div class="filter-bar" id="filter-bar">
+    <button class="filter-pill active" data-tag="all">All</button>
+    {allTags.map((tag) => <button class="filter-pill" data-tag={tag}>{tag}</button>)}
+  </div>
+
+  <ul class="post-list" id="post-list">
+    {allPosts.map((post) => (
+      <li class="post-item" data-tags={post.data.tags.join(',')}>
+        <a href={`/blog/${post.slug}/`} class="post-title">{post.data.title}</a>
+        <div class="post-meta">
+          {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+          {post.data.readingTime && ` · ${post.data.readingTime} min read`}
+        </div>
+        <p class="post-excerpt">{post.data.description}</p>
+        <div>
+          {post.data.tags.map((tag: string) => <span class="tag">{tag}</span>)}
+        </div>
+      </li>
+    ))}
+  </ul>
+
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.PagefindUI) {
+        new PagefindUI({ element: '#search', showSubResults: true, showImages: false });
+      }
+    });
+
+    document.getElementById('filter-bar').addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter-pill');
+      if (!btn) return;
+      document.querySelectorAll('.filter-pill').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tag = btn.dataset.tag;
+      document.querySelectorAll('#post-list .post-item').forEach((item) => {
+        const tags = item.dataset.tags.split(',');
+        item.style.display = tag === 'all' || tags.includes(tag) ? '' : 'none';
+      });
+    });
+  </script>
+</BaseLayout>

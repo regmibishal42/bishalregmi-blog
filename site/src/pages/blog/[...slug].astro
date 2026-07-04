@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+  author: {
+    '@type': 'Person',
+    name: 'Bishal Regmi',
+    url: 'https://bishalregmi.com.np'
+  },
+  keywords: post.data.tags.join(', ')
+};
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  publishedTime={post.data.pubDate.toISOString()}
+  modifiedTime={(post.data.updatedDate ?? post.data.pubDate).toISOString()}
+  tags={post.data.tags}
+  jsonLd={jsonLd}
+>
+  <article>
+    <a class="see-all" href="/blog" style="margin: 0 0 1.5rem;">← Back to blog</a>
+    <h1>{post.data.title}</h1>
+    <div class="post-meta">
+      {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+      {post.data.readingTime && ` · ${post.data.readingTime} min read`}
+    </div>
+    <div style="margin: 0.75rem 0 2rem;">
+      {post.data.tags.map((tag: string) => (
+        <a class="tag" href={`/tags/${tag}/`}>{tag}</a>
+      ))}
+    </div>
+    <Content />
+  </article>
+</BaseLayout>

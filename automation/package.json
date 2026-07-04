@@ -1,0 +1,15 @@
+{
+  "name": "blog-automation",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "generate": "node scripts/generate-post.mjs",
+    "post-linkedin": "node scripts/post-to-linkedin.mjs",
+    "linkedin-auth": "node scripts/get-linkedin-refresh-token.mjs"
+  },
+  "dependencies": {
+    "@google/genai": "^0.3.1",
+    "gray-matter": "^4.0.3",
+    "reading-time": "^1.5.0"
+  }
+}

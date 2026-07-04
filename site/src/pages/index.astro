@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featured = allPosts.slice(0, 3);
+
+const techStack = [
+  'TypeScript', 'Go', 'Node.js', 'NestJS', 'PostgreSQL', 'MongoDB', 'Redis', 'GraphQL', 'Typesense', 'AWS', 'Docker', 'Git'
+];
+
+const capabilities = [
+  {
+    title: 'API & backend architecture',
+    description: 'REST and GraphQL APIs, service boundaries, and data models designed to stay maintainable as traffic and team size grow.'
+  },
+  {
+    title: 'Databases at scale',
+    description: 'Schema design, indexing, and search infrastructure — PostgreSQL, Typesense, Redis — tuned to stay fast under real production load.'
+  },
+  {
+    title: 'Cloud & infrastructure',
+    description: 'Deploying and operating services on AWS with Docker, thinking through failure modes and rollback paths before they matter.'
+  },
+  {
+    title: 'Payments & real-time systems',
+    description: 'Idempotent payment integrations, object storage lifecycles, and real-time features built to survive retries and race conditions.'
+  }
+];
+
+const GITHUB_URL = 'https://github.com/regmibishal42';
+const LINKEDIN_URL = 'https://www.linkedin.com/in/bishalregmi42';
+const EMAIL = 'regmibishal42@gmail.com';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Bishal Regmi',
+  jobTitle: 'Backend Developer',
+  url: 'https://bishalregmi.com.np',
+  sameAs: [GITHUB_URL, LINKEDIN_URL]
+};
+---
+
+<BaseLayout
+  title="Backend Developer"
+  description="Bishal Regmi is a backend developer working with Go, TypeScript, NestJS, PostgreSQL and distributed systems. Writing deep dives on backend engineering."
+  jsonLd={jsonLd}
+>
+  <span class="eyebrow">backend engineer · Kathmandu, Nepal</span>
+  <h1>I build backend systems that don't fall over.</h1>
+  <p class="tagline">
+    I'm Bishal. I design APIs, model databases, and obsess over what happens once real
+    users and real traffic hit a system — the timeouts, the race conditions, the pager
+    going off at 3am. I write here about the backend problems most tutorials skip.
+  </p>
+
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="/blog">Read the blog →</a>
+    <a class="btn btn-ghost" href="#contact">Get in touch</a>
+  </div>
+
+  <p class="tech-label">Tools I reach for</p>
+  <div class="tech-stack">
+    {techStack.map((tech) => <span class="tech-pill">{tech}</span>)}
+  </div>
+
+  <section id="work">
+    <h2 class="section-heading">What I do</h2>
+    <div class="capability-grid">
+      {capabilities.map((c, i) => (
+        <div class="capability-card">
+          <span class="capability-index">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{c.title}</h3>
+          <p>{c.description}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-heading">Recent writing</h2>
+    <ul class="post-list">
+      {featured.map((post) => (
+        <li class="post-item">
+          <a href={`/blog/${post.slug}/`} class="post-title">{post.data.title}</a>
+          <div class="post-meta">
+            {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+            {post.data.readingTime && ` · ${post.data.readingTime} min read`}
+          </div>
+          <p class="post-excerpt">{post.data.description}</p>
+        </li>
+      ))}
+    </ul>
+    {featured.length > 0 && <a class="see-all" href="/blog">See all posts →</a>}
+  </section>
+
+  <section id="contact">
+    <h2 class="section-heading">Get in touch</h2>
+    <div class="contact-card">
+      <p style="margin-bottom: 0;">Best way to reach me is email. I read everything.</p>
+      <div class="contact-links">
+        <a class="btn btn-ghost" href={`mailto:${EMAIL}`}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+          Email
+        </a>
+        <a class="btn btn-ghost" href={GITHUB_URL} target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.28 7.78 10.78.57.1.78-.25.78-.55v-1.94c-3.17.69-3.84-1.53-3.84-1.53-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.74.4-1.25.72-1.54-2.53-.29-5.19-1.27-5.19-5.63 0-1.24.44-2.26 1.17-3.06-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.72 0c2.18-1.48 3.14-1.17 3.14-1.17.62 1.58.23 2.75.11 3.04.73.8 1.17 1.82 1.17 3.06 0 4.37-2.67 5.34-5.21 5.62.41.36.77 1.06.77 2.14v3.17c0 .3.21.66.79.55A11.03 11.03 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5Z"/></svg>
+          GitHub
+        </a>
+        <a class="btn btn-ghost" href={LINKEDIN_URL} target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
