@@ -14,6 +14,9 @@ export async function getStaticPaths() {
 }
 
 const { tag, posts } = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
 ---
 
 <BaseLayout title={`Posts tagged "${tag}"`} description={`Backend engineering and AI infrastructure posts tagged ${tag}.`}>
@@ -22,13 +25,19 @@ const { tag, posts } = Astro.props;
   <ul class="post-list">
     {posts.map((post: any) => (
       <li class="post-item">
-        <a href={`/blog/${post.slug}/`} class="post-title">{post.data.title}</a>
+        <a href={`${normalizedBase}/blog/${post.slug}/`} class="post-title">{post.data.title}</a>
         <div class="post-meta">
           {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+          {post.data.readingTime && <><span class="meta-sep">·</span><span>{post.data.readingTime} min read</span></>}
         </div>
         <p class="post-excerpt">{post.data.description}</p>
+        {post.data.tags.length > 0 && (
+          <div class="tag-row">
+            {post.data.tags.map((t: string) => <span class="tag">{t}</span>)}
+          </div>
+        )}
       </li>
     ))}
   </ul>
-  <a class="see-all" href="/blog">&larr; All posts</a>
+  <a class="see-all" href={`${normalizedBase}/blog/`}>&larr; All posts</a>
 </BaseLayout>

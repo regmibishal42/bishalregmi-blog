@@ -43,9 +43,14 @@ async function refreshAccessToken() {
   return data.access_token;
 }
 
-function buildPostText({ title, description, url, linkedinHook }) {
-  const hook = linkedinHook ? `${linkedinHook}\n` : `🚀 New Blog Post: ${title}\n`;
-  return `${hook}\n${description}\n\nRead the full deep dive here ⬇️\n${url}\n\n#backend #softwareengineering #buildinpublic`;
+// Mirrors how people actually post on LinkedIn: a hook line, some breathing
+// room, a plain-spoken sentence or two, more room, then the bare link. No
+// emojis, no hashtag stuffing — those are the tells that make a post read
+// like it was generated, not written.
+function buildPostText({ title, description, url, linkedinHook, linkedinBody }) {
+  const hook = linkedinHook || title;
+  const body = linkedinBody || description;
+  return `${hook}\n\n\n${body}\n\n${url}`;
 }
 
 async function main() {

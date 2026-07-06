@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL;
+const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
+---
+
+<BaseLayout
+  title="Page not found"
+  description="This page doesn't exist — but the blog and portfolio are right here."
+>
+  <div class="not-found">
+    <div class="hero-terminal">
+      <div class="terminal-bar">
+        <div class="terminal-dots">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot amber"></span>
+          <span class="terminal-dot green"></span>
+        </div>
+        <span class="terminal-title">~/bishal-dev — zsh</span>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line"><span class="t-prompt">❯</span><span class="t-cmd">curl -I {`${normalizedBase}${new URL(Astro.request.url).pathname}`}</span></div>
+        <div class="t-line t-out" style="color:#ff5f57;">HTTP/1.1 404 Not Found</div>
+        <div class="t-line t-out muted">That route doesn't exist on this server.</div>
+        <div class="t-line"><span class="t-prompt">❯</span><span class="cursor"></span></div>
+      </div>
+    </div>
+
+    <h1 style="margin-top: 2rem;">404 — nothing here</h1>
+    <p class="tagline">
+      Either the link is stale or you've mistyped a slug. Try the blog index, or head back home.
+    </p>
+
+    <div class="hero-actions">
+      <a class="btn btn-primary" href={`${normalizedBase}/`}>Back to home</a>
+      <a class="btn btn-ghost" href={`${normalizedBase}/blog/`}>Browse the blog</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .not-found {
+    max-width: 640px;
+    margin: 4rem auto;
+    text-align: left;
+  }
+</style>
