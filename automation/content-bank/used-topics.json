@@ -1,5 +1,6 @@
 {
   "titles": [
-    "The Chunking Problem: Why Your RAG Pipeline's Accuracy Is Capped by How You Split Documents"
+    "The Chunking Problem: Why Your RAG Pipeline's Accuracy Is Capped by How You Split Documents",
+    "Prompt Engineering Is Dead (Sort Of): Structured Outputs and Programmatic Prompt Optimization"
   ]
 }
