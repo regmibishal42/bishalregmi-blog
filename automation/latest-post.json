@@ -1,6 +1,8 @@
 {
-  "title": "Redis Cluster: The 16384 Slots and the Gossip Beneath",
-  "description": "A deep dive into Redis Cluster's internals: hash slots, gossip protocol, resharding, MOVED/ASK redirects, and failover mechanics.",
-  "slug": "redis-cluster-the-16384-slots-and-the-gossip-beneath",
-  "url": "https://bishalregmi.com.np/blog/redis-cluster-the-16384-slots-and-the-gossip-beneath/"
+  "title": "RAG Accuracy: The Chunking Problem You're Missing",
+  "description": "Boost RAG accuracy by mastering document chunking. Learn token, sentence, semantic, and parent-child strategies to fix common pipeline failures.",
+  "slug": "rag-accuracy-the-chunking-problem-you-re-missing",
+  "url": "https://bishalregmi.com.np/blog/rag-accuracy-the-chunking-problem-you-re-missing/",
+  "linkedinHook": "Your RAG pipeline's accuracy isn't a model problem, it's a data problem. Specifically, how you slice your documents.",
+  "linkedinBody": "I just wrote about the 'chunking problem' in RAG. If you're struggling with retrieval quality, this post breaks down why your current chunking strategy is likely holding you back and how to fix it with real-world patterns like parent-child retrieval."
 }
