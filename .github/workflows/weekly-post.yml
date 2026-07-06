@@ -9,7 +9,10 @@ permissions:
   contents: write
 
 jobs:
-  generate-and-post:
+  # Generate the post and get it committed & pushed to main. This is the
+  # only job that touches content — if Gemini refuses/errors, or the push
+  # can't land, nothing downstream runs and nothing is left half-done.
+  generate:
     runs-on: ubuntu-latest
     outputs:
       committed: ${{ steps.commit.outputs.committed }}
@@ -28,37 +31,45 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: npm run generate
-      - name: Post latest blog to LinkedIn
-        working-directory: automation
-        env:
-          LINKEDIN_CLIENT_ID: ${{ secrets.LINKEDIN_CLIENT_ID }}
-          LINKEDIN_CLIENT_SECRET: ${{ secrets.LINKEDIN_CLIENT_SECRET }}
-          LINKEDIN_REFRESH_TOKEN: ${{ secrets.LINKEDIN_REFRESH_TOKEN }}
-          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
-          LINKEDIN_PERSON_URN: ${{ secrets.LINKEDIN_PERSON_URN }}
-        run: npm run post-linkedin
-      - name: Commit generated post
+      - name: Commit and push generated post
         id: commit
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Ensure we have the latest remote main and reset our runner branch to it
-          git fetch --no-tags --prune origin main
-          git checkout -B main origin/main
-          git add site/src/content/blog automation/latest-post.json || true
+
+          git add site/src/content/blog automation/latest-post.json automation/content-bank/used-topics.json
+
           if git diff --cached --quiet; then
-            echo "No generated content to commit."
-            echo "committed=false" >> $GITHUB_OUTPUT
-          else
-            git commit -m "chore: generate weekly AI blog post"
-            # Push with lease to avoid overwriting unrelated remote work
-            git push --set-upstream origin main --force-with-lease
-            echo "committed=true" >> $GITHUB_OUTPUT
+            echo "No generated content to commit this run."
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
+          git commit -m "chore(content): weekly AI blog post"
+
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "committed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            echo "Push attempt $attempt rejected — rebasing onto latest origin/main and retrying..."
+            git fetch --no-tags --prune origin main
+            if ! git rebase origin/main; then
+              git rebase --abort
+              echo "::error::Rebase against origin/main failed — needs manual resolution."
+              exit 1
+            fi
+          done
+
+          echo "::error::Failed to push after 3 attempts."
+          exit 1
+
+  # Only runs if generate actually produced and pushed a new post.
   deploy:
-    needs: generate-and-post
-    if: needs.generate-and-post.outputs.committed == 'true'
+    needs: generate
+    if: needs.generate.outputs.committed == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -87,3 +98,25 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # Only announces on LinkedIn once the article is actually live — never
+  # before, and never if the deploy failed for any reason.
+  publish-linkedin:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Post latest blog to LinkedIn
+        working-directory: automation
+        env:
+          LINKEDIN_CLIENT_ID: ${{ secrets.LINKEDIN_CLIENT_ID }}
+          LINKEDIN_CLIENT_SECRET: ${{ secrets.LINKEDIN_CLIENT_SECRET }}
+          LINKEDIN_REFRESH_TOKEN: ${{ secrets.LINKEDIN_REFRESH_TOKEN }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_PERSON_URN: ${{ secrets.LINKEDIN_PERSON_URN }}
+        run: node scripts/post-to-linkedin.mjs

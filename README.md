@@ -28,7 +28,7 @@ site/                          # Astro portfolio + technical blog
 ├── src/content/blog/          # Blog post markdown files
 ├── src/pages/                 # Site pages (index, blog index, tags)
 ├── src/layouts/               # Astro layout components
-└── public/                    # Static assets (CNAME, robots.txt, og-image.png)
+└── public/                    # Static assets (CNAME, robots.txt, og-image.svg)
 
 automation/                    # Node.js automation scripts
 ├── scripts/
@@ -43,8 +43,33 @@ automation/                    # Node.js automation scripts
 
 .github/workflows/             # CI/CD orchestration
 ├── deploy.yml                 # Build & deploy site on push
-└── weekly-post.yml            # Generate & publish posts (Mondays 09:00 UTC)
+└── weekly-post.yml            # Generate → deploy → publish-linkedin (Mondays 09:00 UTC)
 ```
+
+## Pipeline reliability
+
+`weekly-post.yml` runs as three sequential jobs, deliberately ordered so a
+failure anywhere never leaves the site and LinkedIn out of sync:
+
+1. **`generate`** — calls Gemini and commits+pushes the new post. If Gemini
+   refuses (safety filter) or hits a transient error (rate limit, 5xx), the
+   generator retries with backoff, and rerolls to a fresh topic after a
+   refusal rather than repeating the same blocked prompt. If generation
+   ultimately fails, **no file is written and nothing downstream runs.**
+   The push itself retries against the latest `origin/main` if it's
+   rejected, instead of failing outright.
+2. **`deploy`** — only runs if `generate` actually pushed a new post. Builds
+   and deploys the site.
+3. **`publish-linkedin`** — only runs after `deploy` succeeds, so LinkedIn
+   never announces a post before it's actually live. If the LinkedIn API
+   call fails (expired token, rate limit), the blog post stays published —
+   a missed promo post is a much smaller problem than a broken link shared
+   with your audience.
+
+Model output that reaches the generator is also sanitized against the
+content schema (`site/src/content/config.ts`) before it's written — e.g.
+descriptions are clamped to the schema's length limit — so a slightly
+over-length AI response can't break the site build.
 
 ## Features
 
@@ -166,8 +191,8 @@ npm run linkedin-auth
 
 ### `weekly-post.yml`
 - **Trigger**: Every Monday at 09:00 UTC (via cron) or manual `Run workflow`
-- **Purpose**: Generate AI post, publish to LinkedIn, commit back to repo
-- **Time**: ~2–3 minutes
+- **Purpose**: Generate AI post → commit & deploy → publish to LinkedIn (in that order, each gated on the previous step's success)
+- **Time**: ~2–4 minutes
 
 Modify the cron schedule in `weekly-post.yml` — see [crontab.guru](https://crontab.guru) for syntax.
 

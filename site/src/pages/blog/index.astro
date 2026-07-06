@@ -10,6 +10,20 @@ const allTags = [...new Set(allPosts.flatMap((p) => p.data.tags))].sort();
 const base = import.meta.env.BASE_URL;
 const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
 
+// Strip markdown syntax down to plain words so the client can full-text
+// search article bodies, not just titles/descriptions/tags.
+function toPlainText(markdown: string): string {
+  return markdown
+    .replace(/```[\s\S]*?```/g, ' ')     // fenced code blocks
+    .replace(/`[^`]*`/g, ' ')            // inline code
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ') // images
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // links -> link text
+    .replace(/[#>*_~-]/g, ' ')           // markdown punctuation
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
 // Serialize posts for client-side JS
 const postsJson = JSON.stringify(allPosts.map((p) => ({
   slug:        p.slug,
@@ -18,7 +32,8 @@ const postsJson = JSON.stringify(allPosts.map((p) => ({
   pubDate:     p.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
   readingTime: p.data.readingTime ?? null,
   tags:        p.data.tags,
-  href:        `${normalizedBase}/blog/${p.slug}/`
+  href:        `${normalizedBase}/blog/${p.slug}/`,
+  body:        toPlainText(p.body ?? '')
 })));
 ---
 
@@ -39,7 +54,7 @@ const postsJson = JSON.stringify(allPosts.map((p) => ({
     <input
       id="blog-search"
       type="search"
-      placeholder="Search posts…"
+      placeholder="Search titles, tags, or full article text…"
       autocomplete="off"
       spellcheck="false"
     />
@@ -62,9 +77,6 @@ const postsJson = JSON.stringify(allPosts.map((p) => ({
 
   <!-- Pagination -->
   <div class="pagination" id="pagination"></div>
-
-  <!-- Hidden pagefind for build compatibility -->
-  <div id="pagefind-search" style="display:none"></div>
 </BaseLayout>
 
 <script define:vars={{ postsJson, normalizedBase }}>
@@ -104,7 +116,8 @@ const postsJson = JSON.stringify(allPosts.map((p) => ({
       const matchesSearch = !q ||
         p.title.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
-        p.tags.some(t => t.toLowerCase().includes(q));
+        p.tags.some(t => t.toLowerCase().includes(q)) ||
+        p.body.includes(q);
       return matchesTag && matchesSearch;
     });
     currentPage = 1;
