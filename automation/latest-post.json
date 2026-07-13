@@ -1,8 +1,8 @@
 {
-  "title": "Prompt Engineering Isn't Dead, It's Grown Up",
-  "description": "Why structured outputs, JSON mode, and programmatic prompt optimization are making prompt engineering reliable, testable, and production-ready.",
-  "slug": "prompt-engineering-isn-t-dead-it-s-grown-up",
-  "url": "https://bishalregmi.com.np/blog/prompt-engineering-isn-t-dead-it-s-grown-up/",
-  "linkedinHook": "Your LLM-powered feature just broke production because a language model decided to return a poem instead of JSON. Sound familiar?",
-  "linkedinBody": "We've all been there with brittle prompt engineering. This post breaks down how structured outputs, programmatic optimization, and A/B testing are bringing sanity and reliability to LLM integrations in production. It’s about building stable systems, not just clever prompts."
+  "title": "Circuit Breaker: Stop Microservice Cascade Failures Cold",
+  "description": "Learn why the Circuit Breaker pattern is vital for microservices, preventing cascade failures with clear states and thresholds. Essential reading.",
+  "slug": "circuit-breaker-stop-microservice-cascade-failures-cold",
+  "url": "https://bishalregmi.com.np/blog/circuit-breaker-stop-microservice-cascade-failures-cold/",
+  "linkedinHook": "Your microservices are likely one flaky dependency away from a total system meltdown. Are you prepared?",
+  "linkedinBody": "I just wrote about the Circuit Breaker pattern and why it's non-negotiable for robust distributed systems. It's the pattern that stops one failing service from taking down your entire architecture. Check it out if you're building anything in the cloud."
 }
