@@ -1,8 +1,8 @@
 {
-  "title": "Circuit Breaker: Stop Microservice Cascade Failures Cold",
-  "description": "Learn why the Circuit Breaker pattern is vital for microservices, preventing cascade failures with clear states and thresholds. Essential reading.",
-  "slug": "circuit-breaker-stop-microservice-cascade-failures-cold",
-  "url": "https://bishalregmi.com.np/blog/circuit-breaker-stop-microservice-cascade-failures-cold/",
-  "linkedinHook": "Your microservices are likely one flaky dependency away from a total system meltdown. Are you prepared?",
-  "linkedinBody": "I just wrote about the Circuit Breaker pattern and why it's non-negotiable for robust distributed systems. It's the pattern that stops one failing service from taking down your entire architecture. Check it out if you're building anything in the cloud."
+  "title": "PostgreSQL's Query Planner: Decoding Optimal Execution",
+  "description": "Demystify the PostgreSQL query planner's core decisions. Understand how the cost-based optimizer picks query plans and master EXPLAIN ANALYZE for peak…",
+  "slug": "postgresql-s-query-planner-decoding-optimal-execution",
+  "url": "https://bishalregmi.com.np/blog/postgresql-s-query-planner-decoding-optimal-execution/",
+  "linkedinHook": "Your PostgreSQL queries aren't running how you think they are. The optimizer has a mind of its own. Here's how to finally understand it.",
+  "linkedinBody": "I just dropped a post explaining PostgreSQL's query planner internals. We cover how the cost-based optimizer picks plans, from seq scans to index scans, and how to truly read EXPLAIN ANALYZE. It's built for junior devs to grasp instantly and principals to find deep insights."
 }

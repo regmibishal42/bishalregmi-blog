@@ -2,6 +2,7 @@
   "titles": [
     "The Chunking Problem: Why Your RAG Pipeline's Accuracy Is Capped by How You Split Documents",
     "Prompt Engineering Is Dead (Sort Of): Structured Outputs and Programmatic Prompt Optimization",
-    "Circuit Breaker Pattern: Why Your Microservices Cascade-Fail Without It"
+    "Circuit Breaker Pattern: Why Your Microservices Cascade-Fail Without It",
+    "PostgreSQL Query Planner Internals: How the Cost-Based Optimizer Actually Chooses Your Plan"
   ]
 }
