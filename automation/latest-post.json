@@ -1,8 +1,8 @@
 {
-  "title": "PostgreSQL's Query Planner: Decoding Optimal Execution",
-  "description": "Demystify the PostgreSQL query planner's core decisions. Understand how the cost-based optimizer picks query plans and master EXPLAIN ANALYZE for peak…",
-  "slug": "postgresql-s-query-planner-decoding-optimal-execution",
-  "url": "https://bishalregmi.com.np/blog/postgresql-s-query-planner-decoding-optimal-execution/",
-  "linkedinHook": "Your PostgreSQL queries aren't running how you think they are. The optimizer has a mind of its own. Here's how to finally understand it.",
-  "linkedinBody": "I just dropped a post explaining PostgreSQL's query planner internals. We cover how the cost-based optimizer picks plans, from seq scans to index scans, and how to truly read EXPLAIN ANALYZE. It's built for junior devs to grasp instantly and principals to find deep insights."
+  "title": "Embeddings: The Silent Scalability Trap",
+  "description": "Discover how embedding models, while powerful, can become a critical bottleneck in AI systems. Learn about dimensionality, Matryoshka, and fine-tuning.",
+  "slug": "embeddings-the-silent-scalability-trap",
+  "url": "https://bishalregmi.com.np/blog/embeddings-the-silent-scalability-trap/",
+  "linkedinHook": "Your AI system is humming along, then suddenly, it's slow, expensive, or returning garbage. The hidden culprit might not be your LLM or database. It's your embeddings.",
+  "linkedinBody": "I just wrote about how embedding models, despite their power, can quietly become a massive bottleneck in production systems. We cover dimensionality, Matryoshka representations, and why fine-tuning matters for real-world performance. This is crucial for anyone building scalable AI applications."
 }
