@@ -4,6 +4,7 @@
     "Prompt Engineering Is Dead (Sort Of): Structured Outputs and Programmatic Prompt Optimization",
     "Circuit Breaker Pattern: Why Your Microservices Cascade-Fail Without It",
     "PostgreSQL Query Planner Internals: How the Cost-Based Optimizer Actually Chooses Your Plan",
-    "Embedding Models: The Hidden Bottleneck"
+    "Embedding Models: The Hidden Bottleneck",
+    "Designing for Idempotency: Why Every Distributed System Needs It"
   ]
 }

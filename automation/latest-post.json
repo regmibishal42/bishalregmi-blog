@@ -1,8 +1,8 @@
 {
-  "title": "Embeddings: The Silent Scalability Trap",
-  "description": "Discover how embedding models, while powerful, can become a critical bottleneck in AI systems. Learn about dimensionality, Matryoshka, and fine-tuning.",
-  "slug": "embeddings-the-silent-scalability-trap",
-  "url": "https://bishalregmi.com.np/blog/embeddings-the-silent-scalability-trap/",
-  "linkedinHook": "Your AI system is humming along, then suddenly, it's slow, expensive, or returning garbage. The hidden culprit might not be your LLM or database. It's your embeddings.",
-  "linkedinBody": "I just wrote about how embedding models, despite their power, can quietly become a massive bottleneck in production systems. We cover dimensionality, Matryoshka representations, and why fine-tuning matters for real-world performance. This is crucial for anyone building scalable AI applications."
+  "title": "Idempotency: The Unsung Hero of Resilient Systems",
+  "description": "Discover why idempotency is non-negotiable for distributed systems. Learn to prevent duplicate operations, build resilient APIs, and safeguard critical…",
+  "slug": "idempotency-the-unsung-hero-of-resilient-systems",
+  "url": "https://bishalregmi.com.np/blog/idempotency-the-unsung-hero-of-resilient-systems/",
+  "linkedinHook": "Ever had a user double-charged, or inventory vanish twice? Your distributed system just ran headfirst into a non-idempotent operation.",
+  "linkedinBody": "This post breaks down idempotency, why it's a critical guardrail for production systems, and how to implement it so your services handle retries like a pro. Seriously, don't skip this one."
 }
