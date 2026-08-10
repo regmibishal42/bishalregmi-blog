@@ -1,8 +1,8 @@
 {
-  "title": "Idempotency: The Unsung Hero of Resilient Systems",
-  "description": "Discover why idempotency is non-negotiable for distributed systems. Learn to prevent duplicate operations, build resilient APIs, and safeguard critical…",
-  "slug": "idempotency-the-unsung-hero-of-resilient-systems",
-  "url": "https://bishalregmi.com.np/blog/idempotency-the-unsung-hero-of-resilient-systems/",
-  "linkedinHook": "Ever had a user double-charged, or inventory vanish twice? Your distributed system just ran headfirst into a non-idempotent operation.",
-  "linkedinBody": "This post breaks down idempotency, why it's a critical guardrail for production systems, and how to implement it so your services handle retries like a pro. Seriously, don't skip this one."
+  "title": "Why Your 16-Core Database Isn't Multithreading Queries",
+  "description": "Your beefy database server has 16 cores, but queries feel slow. Discover why PostgreSQL might not be using parallel execution, and how to fix it.",
+  "slug": "why-your-16-core-database-isn-t-multithreading-queries",
+  "url": "https://bishalregmi.com.np/blog/why-your-16-core-database-isn-t-multithreading-queries/",
+  "linkedinHook": "Your 16-core database server is running a massive analytical query, but htop shows only one core spiking. What's going on?",
+  "linkedinBody": "I just wrote about why your PostgreSQL queries might not be using all available CPU cores, even on powerful machines. We explore how parallel execution works, common pitfalls, and the exact settings to tune. It's a game-changer for data warehousing and complex reports."
 }

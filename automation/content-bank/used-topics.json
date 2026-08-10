@@ -5,6 +5,7 @@
     "Circuit Breaker Pattern: Why Your Microservices Cascade-Fail Without It",
     "PostgreSQL Query Planner Internals: How the Cost-Based Optimizer Actually Chooses Your Plan",
     "Embedding Models: The Hidden Bottleneck",
-    "Designing for Idempotency: Why Every Distributed System Needs It"
+    "Designing for Idempotency: Why Every Distributed System Needs It",
+    "Parallel Query Execution: Why Your Queries Aren't Using All 16 Cores"
   ]
 }
