@@ -7,6 +7,7 @@
     "Embedding Models: The Hidden Bottleneck",
     "Designing for Idempotency: Why Every Distributed System Needs It",
     "Parallel Query Execution: Why Your Queries Aren't Using All 16 Cores",
-    "Building an AI Agent from Scratch: Tool Use, ReAct Loops, Memory"
+    "Building an AI Agent from Scratch: Tool Use, ReAct Loops, Memory",
+    "LLM Observability: Tracing, Token Tracking, Hallucination Detection"
   ]
 }

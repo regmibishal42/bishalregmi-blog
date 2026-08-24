@@ -1,8 +1,8 @@
 {
-  "title": "The Agent Loop: Tool Use, ReAct, and Memory from Scratch",
-  "description": "Learn how to build a production-ready AI agent from first principles: master function calling, ReAct loops, and memory design in Python, avoiding common…",
-  "slug": "the-agent-loop-tool-use-react-and-memory-from-scratch",
-  "url": "https://bishalregmi.com.np/blog/the-agent-loop-tool-use-react-and-memory-from-scratch/",
-  "linkedinHook": "Your LLM chatbot just confidently told a customer their order was delivered, despite the tracking showing it's still in the warehouse. Why? Because it couldn't act.",
-  "linkedinBody": "This post breaks down how to give your AI agency: integrating external tools, managing conversation memory, and building the iterative ReAct loop. We'll even build a small framework in Python. This is how you make LLMs go beyond chat and actually get work done."
+  "title": "LLM Observability: Trace Agents, Track Tokens, Detect Lies",
+  "description": "Master LLM observability to debug complex AI agents, optimize token costs, and spot hallucinations with OpenTelemetry and NLI models. A 10x guide.",
+  "slug": "llm-observability-trace-agents-track-tokens-detect-lies",
+  "url": "https://bishalregmi.com.np/blog/llm-observability-trace-agents-track-tokens-detect-lies/",
+  "linkedinHook": "Your LLM application just spun up an expensive, nonsensical answer. Do you know why? Most devs don't. That's a production nightmare waiting to happen.",
+  "linkedinBody": "I just dropped a post on LLM observability, covering how to trace multi-step agent chains, attribute costs, and even detect hallucinations. If you're building with LLMs, this will help you debug faster and ship more reliable systems."
 }
