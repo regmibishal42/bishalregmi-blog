@@ -1,8 +1,8 @@
 {
-  "title": "LLM Observability: Trace Agents, Track Tokens, Detect Lies",
-  "description": "Master LLM observability to debug complex AI agents, optimize token costs, and spot hallucinations with OpenTelemetry and NLI models. A 10x guide.",
-  "slug": "llm-observability-trace-agents-track-tokens-detect-lies",
-  "url": "https://bishalregmi.com.np/blog/llm-observability-trace-agents-track-tokens-detect-lies/",
-  "linkedinHook": "Your LLM application just spun up an expensive, nonsensical answer. Do you know why? Most devs don't. That's a production nightmare waiting to happen.",
-  "linkedinBody": "I just dropped a post on LLM observability, covering how to trace multi-step agent chains, attribute costs, and even detect hallucinations. If you're building with LLMs, this will help you debug faster and ship more reliable systems."
+  "title": "Chaos Engineering: Building Resilience, Not Just Features",
+  "description": "Learn why breaking things on purpose with Chaos Engineering makes your production systems stronger, faster, and more reliable.",
+  "slug": "chaos-engineering-building-resilience-not-just-features",
+  "url": "https://bishalregmi.com.np/blog/chaos-engineering-building-resilience-not-just-features/",
+  "linkedinHook": "Imagine waking up to a critical incident that could have been prevented if you'd just broken something on purpose. That's the power of Chaos Engineering.",
+  "linkedinBody": "This post unpacks why intentionally injecting faults into your systems isn't just a good idea, it's essential for building truly resilient services. We'll look at how tools like Litmus and Chaos Mesh help, and what senior engineers need to know to avoid common pitfalls."
 }
