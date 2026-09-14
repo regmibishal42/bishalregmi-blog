@@ -1,8 +1,8 @@
 {
-  "title": "Chaos Engineering: Building Resilience, Not Just Features",
-  "description": "Learn why breaking things on purpose with Chaos Engineering makes your production systems stronger, faster, and more reliable.",
-  "slug": "chaos-engineering-building-resilience-not-just-features",
-  "url": "https://bishalregmi.com.np/blog/chaos-engineering-building-resilience-not-just-features/",
-  "linkedinHook": "Imagine waking up to a critical incident that could have been prevented if you'd just broken something on purpose. That's the power of Chaos Engineering.",
-  "linkedinBody": "This post unpacks why intentionally injecting faults into your systems isn't just a good idea, it's essential for building truly resilient services. We'll look at how tools like Litmus and Chaos Mesh help, and what senior engineers need to know to avoid common pitfalls."
+  "title": "LLM Eval Is Broken: How to Measure RAG Quality",
+  "description": "Stop blindly trusting LLM responses. Learn why BLEU/ROUGE fail for RAG and how to build a production-grade evaluation pipeline for faithfulness,…",
+  "slug": "llm-eval-is-broken-how-to-measure-rag-quality",
+  "url": "https://bishalregmi.com.np/blog/llm-eval-is-broken-how-to-measure-rag-quality/",
+  "linkedinHook": "Your RAG pipeline just hallucinated customer data on a live chat, and your metrics said everything was 'green'.",
+  "linkedinBody": "We need to talk about LLM evaluation. Standard metrics are useless for RAG. This post breaks down how to actually measure faithfulness, relevancy, and context quality, and how to embed it into your CI/CD. It's a game-changer for production reliability."
 }

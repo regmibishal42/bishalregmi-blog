@@ -9,6 +9,7 @@
     "Parallel Query Execution: Why Your Queries Aren't Using All 16 Cores",
     "Building an AI Agent from Scratch: Tool Use, ReAct Loops, Memory",
     "LLM Observability: Tracing, Token Tracking, Hallucination Detection",
-    "Chaos Engineering in Practice"
+    "Chaos Engineering in Practice",
+    "LLM Evaluation Is Broken: How to Actually Measure RAG Quality"
   ]
 }
