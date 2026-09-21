@@ -10,6 +10,7 @@
     "Building an AI Agent from Scratch: Tool Use, ReAct Loops, Memory",
     "LLM Observability: Tracing, Token Tracking, Hallucination Detection",
     "Chaos Engineering in Practice",
-    "LLM Evaluation Is Broken: How to Actually Measure RAG Quality"
+    "LLM Evaluation Is Broken: How to Actually Measure RAG Quality",
+    "Designing a Notification System: Fan-Out and Delivery Guarantees"
   ]
 }

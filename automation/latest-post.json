@@ -1,8 +1,8 @@
 {
-  "title": "LLM Eval Is Broken: How to Measure RAG Quality",
-  "description": "Stop blindly trusting LLM responses. Learn why BLEU/ROUGE fail for RAG and how to build a production-grade evaluation pipeline for faithfulness,…",
-  "slug": "llm-eval-is-broken-how-to-measure-rag-quality",
-  "url": "https://bishalregmi.com.np/blog/llm-eval-is-broken-how-to-measure-rag-quality/",
-  "linkedinHook": "Your RAG pipeline just hallucinated customer data on a live chat, and your metrics said everything was 'green'.",
-  "linkedinBody": "We need to talk about LLM evaluation. Standard metrics are useless for RAG. This post breaks down how to actually measure faithfulness, relevancy, and context quality, and how to embed it into your CI/CD. It's a game-changer for production reliability."
+  "title": "Notification Systems: Fan-Out & Rock-Solid Delivery",
+  "description": "Master notification system design: choose fan-out, guarantee delivery, throttle channels, and prevent critical alert failures at scale.",
+  "slug": "notification-systems-fan-out-rock-solid-delivery",
+  "url": "https://bishalregmi.com.np/blog/notification-systems-fan-out-rock-solid-delivery/",
+  "linkedinHook": "A missed critical alert can cost millions. Is your notification system a liability or a superpower?",
+  "linkedinBody": "I just broke down the core architectural choices behind designing a robust notification system. We're talking fan-out strategies, ensuring delivery, and how to avoid overwhelming your users or your infrastructure."
 }
