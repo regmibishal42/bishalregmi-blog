@@ -11,6 +11,7 @@
     "LLM Observability: Tracing, Token Tracking, Hallucination Detection",
     "Chaos Engineering in Practice",
     "LLM Evaluation Is Broken: How to Actually Measure RAG Quality",
-    "Designing a Notification System: Fan-Out and Delivery Guarantees"
+    "Designing a Notification System: Fan-Out and Delivery Guarantees",
+    "Designing a Real-Time Chat System at 10M Concurrent Users"
   ]
 }

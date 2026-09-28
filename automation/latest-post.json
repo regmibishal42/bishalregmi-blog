@@ -1,8 +1,8 @@
 {
-  "title": "Notification Systems: Fan-Out & Rock-Solid Delivery",
-  "description": "Master notification system design: choose fan-out, guarantee delivery, throttle channels, and prevent critical alert failures at scale.",
-  "slug": "notification-systems-fan-out-rock-solid-delivery",
-  "url": "https://bishalregmi.com.np/blog/notification-systems-fan-out-rock-solid-delivery/",
-  "linkedinHook": "A missed critical alert can cost millions. Is your notification system a liability or a superpower?",
-  "linkedinBody": "I just broke down the core architectural choices behind designing a robust notification system. We're talking fan-out strategies, ensuring delivery, and how to avoid overwhelming your users or your infrastructure."
+  "title": "Scaling Real-Time Chat to 10M Concurrent Users",
+  "description": "Learn to design a real-time chat system for millions of users. Master WebSocket scaling, pub/sub architecture, message ordering, and presence detection.",
+  "slug": "scaling-real-time-chat-to-10m-concurrent-users",
+  "url": "https://bishalregmi.com.np/blog/scaling-real-time-chat-to-10m-concurrent-users/",
+  "linkedinHook": "Most engineers underestimate the nightmare of scaling a chat system to 10 million concurrent users. Here's how to build one that doesn't melt down.",
+  "linkedinBody": "I just wrote about the architectural patterns behind battle-tested chat systems. If you've ever wondered how WhatsApp or Slack keep millions talking, this dives into the core tech like WebSockets and message brokers."
 }
