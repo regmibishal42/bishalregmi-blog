@@ -13,6 +13,7 @@
     "LLM Evaluation Is Broken: How to Actually Measure RAG Quality",
     "Designing a Notification System: Fan-Out and Delivery Guarantees",
     "Designing a Real-Time Chat System at 10M Concurrent Users",
-    "Designing a Rate Limiter That Actually Works"
+    "Designing a Rate Limiter That Actually Works",
+    "Redis Persistence Wars: RDB vs AOF vs Hybrid"
   ]
 }

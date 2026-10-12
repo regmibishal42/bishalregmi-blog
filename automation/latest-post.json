@@ -1,8 +1,8 @@
 {
-  "title": "Rate Limiting That Actually Works",
-  "description": "Stop outages and protect your APIs. Learn the critical differences between token bucket and sliding window algorithms, and how to build a distributed…",
-  "slug": "rate-limiting-that-actually-works",
-  "url": "https://bishalregmi.com.np/blog/rate-limiting-that-actually-works/",
-  "linkedinHook": "Your production systems are running without the right rate limiter, and it's a ticking time bomb. Here's how to build one that genuinely protects.",
-  "linkedinBody": "I just wrote about designing rate limiters that actually work, especially in distributed environments. It covers critical algorithm choices, implementing with Redis Lua for atomic operations, and where to place limits in your architecture."
+  "title": "Redis Persistence Wars: RDB, AOF, and Hybrid",
+  "description": "Master Redis persistence: RDB, AOF, and Hybrid. Learn fork() copy-on-write, AOF rewrite mechanics, fsync policies, and prevent data loss.",
+  "slug": "redis-persistence-wars-rdb-aof-and-hybrid",
+  "url": "https://bishalregmi.com.np/blog/redis-persistence-wars-rdb-aof-and-hybrid/",
+  "linkedinHook": "Most Redis engineers underestimate the true cost of an RDB snapshot or an aggressive AOF fsync. Your 'durable' setup might be leaking critical data or introducing hidden latency bombs.",
+  "linkedinBody": "I just dropped a post diving deep into Redis's persistence strategies: RDB, AOF, and the new Hybrid approach. We look at the fork() copy-on-write mechanics, AOF rewrite magic, and how your fsync choices directly impact data loss windows and recovery times. It's a must-read if you run Redis in production."
 }
