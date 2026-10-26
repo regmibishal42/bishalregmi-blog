@@ -1,8 +1,8 @@
 {
-  "title": "Redis Persistence Wars: RDB, AOF, and Hybrid",
-  "description": "Master Redis persistence: RDB, AOF, and Hybrid. Learn fork() copy-on-write, AOF rewrite mechanics, fsync policies, and prevent data loss.",
-  "slug": "redis-persistence-wars-rdb-aof-and-hybrid",
-  "url": "https://bishalregmi.com.np/blog/redis-persistence-wars-rdb-aof-and-hybrid/",
-  "linkedinHook": "Most Redis engineers underestimate the true cost of an RDB snapshot or an aggressive AOF fsync. Your 'durable' setup might be leaking critical data or introducing hidden latency bombs.",
-  "linkedinBody": "I just dropped a post diving deep into Redis's persistence strategies: RDB, AOF, and the new Hybrid approach. We look at the fork() copy-on-write mechanics, AOF rewrite magic, and how your fsync choices directly impact data loss windows and recovery times. It's a must-read if you run Redis in production."
+  "title": "Tuning PostgreSQL Autovacuum for High-Write Workloads",
+  "description": "Prevent PostgreSQL performance crises in high-write applications. Master autovacuum tuning, worker scheduling, and anti-wraparound to keep your database…",
+  "slug": "tuning-postgresql-autovacuum-for-high-write-workloads",
+  "url": "https://bishalregmi.com.np/blog/tuning-postgresql-autovacuum-for-high-write-workloads/",
+  "linkedinHook": "Your PostgreSQL database is silently filling up with invisible garbage. Ignore it, and watch your high-write application grind to a halt.",
+  "linkedinBody": "Just shipped a deep dive on taming autovacuum for high-throughput systems. If your Postgres handles serious writes, this covers how to prevent performance cliffs and database outages."
 }
