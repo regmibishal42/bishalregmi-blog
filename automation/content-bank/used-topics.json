@@ -15,6 +15,7 @@
     "Designing a Real-Time Chat System at 10M Concurrent Users",
     "Designing a Rate Limiter That Actually Works",
     "Redis Persistence Wars: RDB vs AOF vs Hybrid",
-    "PostgreSQL Autovacuum Tuning for High-Write Workloads"
+    "PostgreSQL Autovacuum Tuning for High-Write Workloads",
+    "etcd Performance Tuning: Disk I/O, Snapshotting, Compaction"
   ]
 }

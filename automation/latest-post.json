@@ -1,8 +1,8 @@
 {
-  "title": "Tuning PostgreSQL Autovacuum for High-Write Workloads",
-  "description": "Prevent PostgreSQL performance crises in high-write applications. Master autovacuum tuning, worker scheduling, and anti-wraparound to keep your database…",
-  "slug": "tuning-postgresql-autovacuum-for-high-write-workloads",
-  "url": "https://bishalregmi.com.np/blog/tuning-postgresql-autovacuum-for-high-write-workloads/",
-  "linkedinHook": "Your PostgreSQL database is silently filling up with invisible garbage. Ignore it, and watch your high-write application grind to a halt.",
-  "linkedinBody": "Just shipped a deep dive on taming autovacuum for high-throughput systems. If your Postgres handles serious writes, this covers how to prevent performance cliffs and database outages."
+  "title": "Taming etcd: Disk I/O, Snapshots, & Compaction for Performance",
+  "description": "Is your Kubernetes cluster slow? We're diving deep into etcd performance bottlenecks – disk I/O, snapshotting, and compaction – and how to fix them.",
+  "slug": "taming-etcd-disk-i-o-snapshots-compaction-for-performance",
+  "url": "https://bishalregmi.com.np/blog/taming-etcd-disk-i-o-snapshots-compaction-for-performance/",
+  "linkedinHook": "Your Kubernetes cluster is only as fast as its slowest etcd fsync – and it's probably slower than you think.",
+  "linkedinBody": "Just shipped a deep dive on etcd performance. If you've ever battled slow API responses or mysterious cluster instability, this one's for you. We're breaking down disk I/O, snapshotting, and compaction to keep your etcd snappy."
 }
