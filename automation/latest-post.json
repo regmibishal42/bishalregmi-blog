@@ -1,8 +1,8 @@
 {
-  "title": "Taming etcd: Disk I/O, Snapshots, & Compaction for Performance",
-  "description": "Is your Kubernetes cluster slow? We're diving deep into etcd performance bottlenecks – disk I/O, snapshotting, and compaction – and how to fix them.",
-  "slug": "taming-etcd-disk-i-o-snapshots-compaction-for-performance",
-  "url": "https://bishalregmi.com.np/blog/taming-etcd-disk-i-o-snapshots-compaction-for-performance/",
-  "linkedinHook": "Your Kubernetes cluster is only as fast as its slowest etcd fsync – and it's probably slower than you think.",
-  "linkedinBody": "Just shipped a deep dive on etcd performance. If you've ever battled slow API responses or mysterious cluster instability, this one's for you. We're breaking down disk I/O, snapshotting, and compaction to keep your etcd snappy."
+  "title": "Vector DBs Demystified: HNSW, IVF, and PQ Explained",
+  "description": "Confused by HNSW, IVF, and PQ in vector databases? Learn the graph, tree, and quantization ANN algorithms, memory math, and trade-offs for production.",
+  "slug": "vector-dbs-demystified-hnsw-ivf-and-pq-explained",
+  "url": "https://bishalregmi.com.np/blog/vector-dbs-demystified-hnsw-ivf-and-pq-explained/",
+  "linkedinHook": "Most vector search implementations are ticking time bombs of latency and memory usage. Here's how to disarm them before they explode your RAG pipeline.",
+  "linkedinBody": "I just wrote a deep dive on vector databases, breaking down HNSW, IVF, and PQ. We cover the core algorithms, memory math, and why your pgvector setup might not scale. This is for anyone building serious RAG or similarity search. Hope it helps you build more robust systems."
 }
