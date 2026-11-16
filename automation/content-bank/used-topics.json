@@ -17,6 +17,7 @@
     "Redis Persistence Wars: RDB vs AOF vs Hybrid",
     "PostgreSQL Autovacuum Tuning for High-Write Workloads",
     "etcd Performance Tuning: Disk I/O, Snapshotting, Compaction",
-    "Vector Databases Demystified: HNSW vs IVF vs PQ"
+    "Vector Databases Demystified: HNSW vs IVF vs PQ",
+    "Redis Performance Tuning: Pipeline, Slow Log, and What Actually Matters"
   ]
 }
